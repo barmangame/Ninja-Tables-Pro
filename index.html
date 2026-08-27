@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Tables Pro | افزونه جدول‌ساز حرفه‌ای وردپرس</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.9;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* هدر */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: #111;
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 50px;
+            color: #60a5fa;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 7rem 5% 5rem;
+            background: #0d0d0d;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .hero h1 span {
+            color: #60a5fa;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #999;
+            max-width: 650px;
+            margin: 0 auto 1rem;
+        }
+
+        .hero .note {
+            font-size: 1rem;
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.08);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            display: inline-block;
+            margin-top: 2rem;
+            line-height: 2;
+        }
+
+        /* خط جداکننده */
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: #60a5fa;
+            margin: 4rem auto;
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.8s ease;
+        }
+
+        .divider.visible {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        /* سکشن‌ها */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 5% 5rem;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 3rem;
+            font-size: 1.05rem;
+        }
+
+        /* ویژگی‌ها */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s;
+            cursor: default;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            background: #131313;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .feature-number {
+            font-size: 0.8rem;
+            color: #60a5fa;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #999;
+        }
+
+        /* قابلیت‌های پیشرفته */
+        .advanced-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .advanced-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.2rem;
+            background: #111;
+            border: 1px solid #1e1e1e;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .advanced-item:hover {
+            border-color: rgba(96, 165, 250, 0.3);
+            background: #131313;
+        }
+
+        .advanced-item .dot {
+            width: 6px;
+            height: 6px;
+            background: #60a5fa;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .advanced-item span {
+            font-size: 0.95rem;
+            color: #bbb;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 5rem 5%;
+            background: #111;
+            border-top: 1px solid #222;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .cta.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .cta p {
+            color: #999;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 2.2;
+        }
+
+        .cta .highlight {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        /* فوتر */
+        .footer {
+            text-align: center;
+            padding: 2.5rem 5%;
+            background: #0a0a0a;
+            color: #555;
+            font-size: 0.9rem;
+            border-top: 1px solid #1a1a1a;
+            line-height: 2;
+        }
+
+        /* انیمیشن */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem 5%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- هدر -->
+    <header class="header">
+        <div class="logo">Ninja <span>Tables Pro</span></div>
+        <span class="badge">پرفروش‌ترین افزونه جدول‌ساز</span>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>جداول حرفه‌ای، <span>بدون کدنویسی</span></h1>
+        <p>
+            قدرتمندترین افزونه جدول‌ساز وردپرس — ساخت جداول زیبا، پویا و واکنش‌گرا در چند دقیقه.
+        </p>
+        <div class="note">
+            برای تهیه این افزونه، به <strong>ژاکت</strong> — معتبرترین مرجع خرید افزونه‌های وردپرس در ایران — مراجعه کنید.
+        </div>
+    </section>
+
+    <div class="divider" id="divider1"></div>
+
+    <!-- سکشن ۱: ویژگی‌های اصلی -->
+    <section class="section" id="section1">
+        <h2 class="section-title">چرا Ninja Tables Pro؟</h2>
+        <p class="section-subtitle">هر آنچه برای ساخت جداول حرفه‌ای نیاز دارید، یکجا در این افزونه</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-number">۰۱</div>
+                <h3>📊 اتصال Google Sheets</h3>
+                <p>داده‌های خود را مستقیماً از گوگل شیت وارد کنید. هر تغییری در شیت، جدول سایت شما را به‌صورت خودکار به‌روز می‌کند. بدون نیاز به ویرایش دستی.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">۰۲</div>
+                <h3>🛍️ یکپارچگی با WooCommerce</h3>
+                <p>جدول محصولات، قیمت‌ها، موجودی و مشخصات فروشگاه ووکامرس خود را مستقیماً بسازید. مدیریت فروشگاه هرگز اینقدر ساده نبوده است.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">۰۳</div>
+                <h3>🎨 قالب‌بندی شرطی</h3>
+                <p>سلول‌ها را بر اساس مقدارشان به‌صورت خودکار رنگی کنید. اعداد بالا قرمز، اعداد پایین سبز — همه‌چیز هوشمند و خودکار.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">۰۴</div>
+                <h3>📤 خروجی و ورودی CSV</h3>
+                <p>جداول خود را به فایل CSV تبدیل کنید یا داده‌ها را از فایل CSV وارد نمایید. انتقال اطلاعات هرگز اینقدر ساده نبوده.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">۰۵</div>
+                <h3>🔍 فیلتر و جستجوی پیشرفته</h3>
+                <p>کاربران می‌توانند جداول را فیلتر، جستجو و مرتب کنند. تجربه کاربری فوق‌العاده برای بازدیدکنندگان سایت شما.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">۰۶</div>
+                <h3>🖼️ افزودن مدیا به سلول‌ها</h3>
+                <p>تصاویر، ویدیو و آیکون را مستقیماً در سلول‌های جدول قرار دهید. جداول شما دیگر خسته‌کننده نخواهند بود.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider" id="divider2"></div>
+
+    <!-- سکشن ۲: قابلیت‌های پیشرفته -->
+    <section class="section" id="section2">
+        <h2 class="section-title">قابلیت‌های پیشرفته</h2>
+        <p class="section-subtitle">امکاناتی که Ninja Tables Pro را از بقیه متمایز می‌کند</p>
+        <div class="advanced-list">
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>ادغام سلول‌ها (Colspan) برای جداول پیچیده</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>مرتب‌سازی Drag & Drop ردیف‌ها</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>رنگ‌بندی نامحدود برای هر ستون</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>شورت‌کد در سلول‌های جدول</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>تنظیم حداکثر عرض ستون‌ها</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>ترازبندی متن در سلول‌ها</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>افزودن کلاس CSS سفارشی</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>تبدیل مقادیر با Transform Value</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>رابط کاربری فیلتر سفارشی</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>فیلتر پیشرفته داده‌ها</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>اتصال به WP Fluent Form</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>نمایش پست‌های وردپرس در جدول</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>مرتب‌سازی پیشرفته تاریخ</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>واکنش‌گرای کامل برای موبایل و تبلت</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>پشتیبانی از داده‌های عددی و متنی</span>
+            </div>
+            <div class="advanced-item">
+                <span class="dot"></span>
+                <span>سازگار با اکثر قالب‌های وردپرس</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider" id="divider3"></div>
+
+    <!-- سکشن ۳: برای چه کسانی مناسب است -->
+    <section class="section" id="section3">
+        <h2 class="section-title">برای چه کسانی مناسب است؟</h2>
+        <p class="section-subtitle">هر کسی که با داده‌ها سر و کار دارد</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-number">A</div>
+                <h3>فروشگاه‌های آنلاین</h3>
+                <p>نمایش جدول قیمت‌ها، مقایسه محصولات، مشخصات فنی و هر اطلاعاتی که مشتریان نیاز دارند. یکپارچه با ووکامرس.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">B</div>
+                <h3>وبلاگرها و محتوانویسان</h3>
+                <p>جداول مقایسه‌ای، جداول داده‌ها، جدول اطلاعات و هر چیزی که محتوای شما را غنی‌تر می‌کند.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">C</div>
+                <h3>شرکت‌ها و سازمان‌ها</h3>
+                <p>جدول تعرفه خدمات، جدول اعضای تیم، جدول محصولات و خدمات — همه‌چیز مرتب و حرفه‌ای.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-number">D</div>
+                <h3>آژانس‌ها و فریلنسرها</h3>
+                <p>برای مشتریان خود جداول حرفه‌ای بسازید و پروژه‌های خود را سریع‌تر تحویل دهید.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="cta">
+        <h2>همین حالا شروع کنید</h2>
+        <p>
+            برای دریافت این افزونه حرفه‌ای و بی‌نظیر، به <span class="highlight">ژاکت</span> مراجعه کنید — معتبرترین مرجع خرید افزونه‌های وردپرس در ایران.
+        </p>
+        <p>
+            با Ninja Tables Pro، جداول خود را به سطح جدیدی از حرفه‌ای بودن برسانید.
+        </p>
+    </section>
+
+    <!-- فوتر -->
+    <footer class="footer">
+        Ninja Tables Pro — پرفروش‌ترین افزونه جدول‌ساز وردپرس<br>
+        تهیه از ژاکت | معتبرترین مرجع خرید افزونه‌های وردپرس
+    </footer>
+
+    <script>
+        // افکت اسکرول
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // مشاهده همه سکشن‌ها و جداکننده‌ها
+        document.querySelectorAll('.section, .divider, .cta').forEach(el => {
+            observer.observe(el);
+        });
+
+        // افکت ظهور نرم برای هدر
+        document.querySelector('.hero').style.opacity = '0';
+        document.querySelector('.hero').style.transform = 'translateY(50px)';
+
+        setTimeout(() => {
+            const hero = document.querySelector('.hero');
+            hero.style.transition = 'all 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
+            hero.style.opacity = '1';
+            hero.style.transform = 'translateY(0)';
+        }, 100);
+    </script>
+
+</body>
+</html>
