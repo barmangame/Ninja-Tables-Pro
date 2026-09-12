@@ -3,496 +3,526 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ninja Tables Pro | افزونه جدول‌ساز حرفه‌ای وردپرس</title>
+    <title>Ninja Tables Pro | جدول‌ساز حرفه‌ای وردپرس</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- IranSans Font -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @font-face {
+            font-family: 'IRANSans';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.0/dist/font-fa/IRANSansWeb(FaNum).woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
         }
-
+        @font-face {
+            font-family: 'IRANSans';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.0/dist/font-fa/IRANSansWeb(FaNum)_Bold.woff2') format('woff2');
+            font-weight: bold;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'IRANSans';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/iransans-font@v1.0.0/dist/font-fa/IRANSansWeb(FaNum)_Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-display: swap;
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['IRANSans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        
         body {
-            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.9;
-            min-height: 100vh;
+            font-family: 'IRANSans', sans-serif;
+            background: #000;
+            color: #fff;
             overflow-x: hidden;
         }
-
-        /* هدر */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            background: #111;
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .logo span {
-            color: #60a5fa;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.4rem 1.2rem;
-            background: rgba(96, 165, 250, 0.1);
-            border: 1px solid rgba(96, 165, 250, 0.25);
-            border-radius: 50px;
-            color: #60a5fa;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* Hero */
-        .hero {
-            text-align: center;
-            padding: 7rem 5% 5rem;
-            background: #0d0d0d;
+        
+        /* Fade in animation */
+        .fade-in {
             opacity: 0;
-            transform: translateY(50px);
-            animation: fadeUp 1s ease forwards;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-            color: #fff;
-        }
-
-        .hero h1 span {
-            color: #60a5fa;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #999;
-            max-width: 650px;
-            margin: 0 auto 1rem;
-        }
-
-        .hero .note {
-            font-size: 1rem;
-            color: #60a5fa;
-            background: rgba(96, 165, 250, 0.08);
-            border: 1px solid rgba(96, 165, 250, 0.2);
-            padding: 1rem 2rem;
-            border-radius: 16px;
-            display: inline-block;
-            margin-top: 2rem;
-            line-height: 2;
-        }
-
-        /* خط جداکننده */
-        .divider {
-            width: 60px;
-            height: 3px;
-            background: #60a5fa;
-            margin: 4rem auto;
-            border-radius: 2px;
-            opacity: 0;
-            transform: scaleX(0);
-            transition: all 0.8s ease;
-        }
-
-        .divider.visible {
-            opacity: 1;
-            transform: scaleX(1);
-        }
-
-        /* سکشن‌ها */
-        .section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 3rem 5% 5rem;
-            opacity: 0;
-            transform: translateY(60px);
-            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .section.visible {
+        
+        .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 1rem;
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        
+        /* Hero glow */
+        .hero-glow {
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+            filter: blur(80px);
         }
-
-        .section-subtitle {
-            text-align: center;
-            color: #888;
-            margin-bottom: 3rem;
-            font-size: 1.05rem;
+        
+        .orange-glow {
+            position: absolute;
+            bottom: 0;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            filter: blur(80px);
         }
-
-        /* ویژگی‌ها */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
+        
+        .blue-gradient {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Card hover */
         .feature-card {
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.4s;
-            cursor: default;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
+        
         .feature-card:hover {
-            border-color: rgba(96, 165, 250, 0.4);
-            background: #131313;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-4px);
         }
-
-        .feature-number {
-            font-size: 0.8rem;
-            color: #60a5fa;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.8rem;
+        
+        .feature-card:hover .icon-box {
+            background: rgba(96, 165, 250, 0.15);
+            transform: scale(1.1);
         }
-
-        .feature-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-            color: #fff;
+        
+        .icon-box {
+            transition: all 0.4s ease;
         }
-
-        .feature-card p {
-            font-size: 0.95rem;
-            color: #999;
-        }
-
-        /* قابلیت‌های پیشرفته */
-        .advanced-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-
-        .advanced-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem 1.2rem;
-            background: #111;
-            border: 1px solid #1e1e1e;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-
-        .advanced-item:hover {
-            border-color: rgba(96, 165, 250, 0.3);
-            background: #131313;
-        }
-
-        .advanced-item .dot {
+        
+        /* Animated dot */
+        .pulse-dot {
             width: 6px;
             height: 6px;
-            background: #60a5fa;
+            background: #10b981;
             border-radius: 50%;
-            flex-shrink: 0;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse 2s infinite;
         }
-
-        .advanced-item span {
-            font-size: 0.95rem;
-            color: #bbb;
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
-
-        /* CTA */
-        .cta {
-            text-align: center;
-            padding: 5rem 5%;
-            background: #111;
-            border-top: 1px solid #222;
-            opacity: 0;
-            transform: translateY(60px);
-            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        
+        /* Floating shapes */
+        .floating-shape {
+            animation: float 6s ease-in-out infinite;
         }
-
-        .cta.visible {
-            opacity: 1;
-            transform: translateY(0);
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
-
-        .cta h2 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: #fff;
+        
+        /* Button glow */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
         }
-
-        .cta p {
-            color: #999;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 2.2;
+        
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
         }
-
-        .cta .highlight {
-            color: #60a5fa;
-            font-weight: 700;
+        
+        .btn-glow:hover::before {
+            transform: translateX(100%);
         }
-
-        /* فوتر */
-        .footer {
-            text-align: center;
-            padding: 2.5rem 5%;
-            background: #0a0a0a;
-            color: #555;
-            font-size: 0.9rem;
-            border-top: 1px solid #1a1a1a;
-            line-height: 2;
+        
+        /* Table row hover */
+        .table-row {
+            transition: background 0.2s;
         }
-
-        /* انیمیشن */
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        
+        .table-row:hover {
+            background: rgba(96, 165, 250, 0.05);
         }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 0.8rem;
-                padding: 1rem 5%;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
+        
+        /* FAQ */
+        details[open] summary .plus {
+            transform: rotate(45deg);
+        }
+        
+        .plus {
+            transition: transform 0.3s ease;
         }
     </style>
 </head>
-<body>
+<body class="bg-black text-white antialiased">
 
-    <!-- هدر -->
-    <header class="header">
-        <div class="logo">Ninja <span>Tables Pro</span></div>
-        <span class="badge">پرفروش‌ترین افزونه جدول‌ساز</span>
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 3h14v2H3V3zm0 4h14v2H3V7zm0 4h14v2H3v-2zm0 4h14v2H3v-2z"/>
+                    </svg>
+                </div>
+                <span class="font-bold text-sm tracking-tight">Ninja Tables <span class="text-blue-400">Pro</span></span>
+            </div>
+            <nav class="hidden md:flex items-center gap-10 text-sm text-white/50">
+                <a href="#features" class="hover:text-white transition-colors duration-300">ویژگی‌ها</a>
+                <a href="#demo" class="hover:text-white transition-colors duration-300">دمو</a>
+                <a href="#faq" class="hover:text-white transition-colors duration-300">سوالات</a>
+            </nav>
+            <a href="#" id="buy-header" class="text-sm px-5 py-2 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-300 font-medium hover:shadow-lg hover:shadow-white/10">
+                خرید از ژاکت
+            </a>
+        </div>
     </header>
 
     <!-- Hero -->
-    <section class="hero">
-        <h1>جداول حرفه‌ای، <span>بدون کدنویسی</span></h1>
-        <p>
-            قدرتمندترین افزونه جدول‌ساز وردپرس — ساخت جداول زیبا، پویا و واکنش‌گرا در چند دقیقه.
-        </p>
-        <div class="note">
-            برای تهیه این افزونه، به <strong>ژاکت</strong> — معتبرترین مرجع خرید افزونه‌های وردپرس در ایران — مراجعه کنید.
-        </div>
-    </section>
-
-    <div class="divider" id="divider1"></div>
-
-    <!-- سکشن ۱: ویژگی‌های اصلی -->
-    <section class="section" id="section1">
-        <h2 class="section-title">چرا Ninja Tables Pro؟</h2>
-        <p class="section-subtitle">هر آنچه برای ساخت جداول حرفه‌ای نیاز دارید، یکجا در این افزونه</p>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-number">۰۱</div>
-                <h3>📊 اتصال Google Sheets</h3>
-                <p>داده‌های خود را مستقیماً از گوگل شیت وارد کنید. هر تغییری در شیت، جدول سایت شما را به‌صورت خودکار به‌روز می‌کند. بدون نیاز به ویرایش دستی.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-number">۰۲</div>
-                <h3>🛍️ یکپارچگی با WooCommerce</h3>
-                <p>جدول محصولات، قیمت‌ها، موجودی و مشخصات فروشگاه ووکامرس خود را مستقیماً بسازید. مدیریت فروشگاه هرگز اینقدر ساده نبوده است.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-number">۰۳</div>
-                <h3>🎨 قالب‌بندی شرطی</h3>
-                <p>سلول‌ها را بر اساس مقدارشان به‌صورت خودکار رنگی کنید. اعداد بالا قرمز، اعداد پایین سبز — همه‌چیز هوشمند و خودکار.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-number">۰۴</div>
-                <h3>📤 خروجی و ورودی CSV</h3>
-                <p>جداول خود را به فایل CSV تبدیل کنید یا داده‌ها را از فایل CSV وارد نمایید. انتقال اطلاعات هرگز اینقدر ساده نبوده.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-number">۰۵</div>
-                <h3>🔍 فیلتر و جستجوی پیشرفته</h3>
-                <p>کاربران می‌توانند جداول را فیلتر، جستجو و مرتب کنند. تجربه کاربری فوق‌العاده برای بازدیدکنندگان سایت شما.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-number">۰۶</div>
-                <h3>🖼️ افزودن مدیا به سلول‌ها</h3>
-                <p>تصاویر، ویدیو و آیکون را مستقیماً در سلول‌های جدول قرار دهید. جداول شما دیگر خسته‌کننده نخواهند بود.</p>
+    <section class="relative pt-40 pb-32 px-6 lg:px-12 overflow-hidden">
+        <div class="hero-glow"></div>
+        
+        <div class="max-w-7xl mx-auto relative">
+            <div class="max-w-4xl fade-in">
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full mb-8">
+                    <span class="pulse-dot"></span>
+                    <span class="text-xs text-white/60">سازگار با وردپرس ۶.۵+ و ووکامرس</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-8">
+                    داده‌ها را<br>
+                    <span class="blue-gradient">زیبا نمایش بده.</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-white/50 leading-relaxed mb-12 max-w-2xl">
+                    Ninja Tables Pro — راهی ساده برای ساخت جدول‌های حرفه‌ای، سریع و واکنش‌گرا در وردپرس. بدون کدنویسی.
+                </p>
+                
+                <div class="flex flex-wrap items-center gap-4">
+                    <a href="#" id="buy-hero" class="btn-glow px-7 py-3.5 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-300 font-medium text-sm shadow-lg shadow-white/5">
+                        خرید از ژاکت
+                    </a>
+                    <a href="#demo" class="px-7 py-3.5 text-white/70 hover:text-white transition-colors duration-300 font-medium text-sm flex items-center gap-2 group">
+                        مشاهده دمو
+                        <span class="group-hover:translate-x-[-4px] transition-transform duration-300">←</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <div class="divider" id="divider2"></div>
-
-    <!-- سکشن ۲: قابلیت‌های پیشرفته -->
-    <section class="section" id="section2">
-        <h2 class="section-title">قابلیت‌های پیشرفته</h2>
-        <p class="section-subtitle">امکاناتی که Ninja Tables Pro را از بقیه متمایز می‌کند</p>
-        <div class="advanced-list">
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>ادغام سلول‌ها (Colspan) برای جداول پیچیده</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>مرتب‌سازی Drag & Drop ردیف‌ها</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>رنگ‌بندی نامحدود برای هر ستون</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>شورت‌کد در سلول‌های جدول</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>تنظیم حداکثر عرض ستون‌ها</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>ترازبندی متن در سلول‌ها</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>افزودن کلاس CSS سفارشی</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>تبدیل مقادیر با Transform Value</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>رابط کاربری فیلتر سفارشی</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>فیلتر پیشرفته داده‌ها</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>اتصال به WP Fluent Form</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>نمایش پست‌های وردپرس در جدول</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>مرتب‌سازی پیشرفته تاریخ</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>واکنش‌گرای کامل برای موبایل و تبلت</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>پشتیبانی از داده‌های عددی و متنی</span>
-            </div>
-            <div class="advanced-item">
-                <span class="dot"></span>
-                <span>سازگار با اکثر قالب‌های وردپرس</span>
+    <!-- Stats -->
+    <section class="px-6 lg:px-12 pb-32">
+        <div class="max-w-7xl mx-auto fade-in">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent hover:border-blue-500/30 transition-all duration-500">
+                    <div class="text-4xl font-bold mb-2 blue-gradient">۵۰+</div>
+                    <div class="text-sm text-white/40">المان آماده</div>
+                </div>
+                <div class="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent hover:border-blue-500/30 transition-all duration-500">
+                    <div class="text-4xl font-bold mb-2 blue-gradient">۱۰۰٪</div>
+                    <div class="text-sm text-white/40">واکنش‌گرا</div>
+                </div>
+                <div class="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent hover:border-blue-500/30 transition-all duration-500">
+                    <div class="text-4xl font-bold mb-2 blue-gradient">AJAX</div>
+                    <div class="text-sm text-white/40">سرعت بالا</div>
+                </div>
+                <div class="p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/[0.03] to-transparent hover:border-blue-500/30 transition-all duration-500">
+                    <div class="text-4xl font-bold mb-2 blue-gradient">۰</div>
+                    <div class="text-sm text-white/40">خط کد</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <div class="divider" id="divider3"></div>
-
-    <!-- سکشن ۳: برای چه کسانی مناسب است -->
-    <section class="section" id="section3">
-        <h2 class="section-title">برای چه کسانی مناسب است؟</h2>
-        <p class="section-subtitle">هر کسی که با داده‌ها سر و کار دارد</p>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-number">A</div>
-                <h3>فروشگاه‌های آنلاین</h3>
-                <p>نمایش جدول قیمت‌ها، مقایسه محصولات، مشخصات فنی و هر اطلاعاتی که مشتریان نیاز دارند. یکپارچه با ووکامرس.</p>
+    <!-- Features -->
+    <section id="features" class="relative px-6 lg:px-12 py-32 border-t border-white/5">
+        <div class="orange-glow"></div>
+        
+        <div class="max-w-7xl mx-auto relative">
+            <div class="max-w-3xl mb-24 fade-in">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+                    همه‌چیز.<br>
+                    <span class="text-white/30">در یک افزونه.</span>
+                </h2>
+                <p class="text-lg text-white/50 leading-relaxed">
+                    از اتصال به گوگل شیت تا یکپارچگی کامل با ووکامرس — همه ابزارهایی که برای ساخت جداول حرفه‌ای نیاز دارید.
+                </p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-number">B</div>
-                <h3>وبلاگرها و محتوانویسان</h3>
-                <p>جداول مقایسه‌ای، جداول داده‌ها، جدول اطلاعات و هر چیزی که محتوای شما را غنی‌تر می‌کند.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7c-2 0-3 1-3 3z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 12h16M9 4v16"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">اتصال Google Sheets</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">داده‌ها را مستقیم از گوگل شیت وارد کنید.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">یکپارچگی ووکامرس</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">محصولات را با قیمت و دکمه خرید نمایش دهید.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">۱۰۰٪ واکنش‌گرا</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">نمایش عالی در موبایل و تبلت.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4h18M3 12h18M3 20h12"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">فیلتر پیشرفته</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">جستجو میان هزاران ردیف بدون رفرش.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">سفارشی‌سازی ظاهر</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">تغییر رنگ و فونت بدون کد.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">سرعت بالا با AJAX</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">بارگذاری سریع داده‌های حجیم.</p>
+                </div>
+
+                <!-- Feature 7 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">خروجی CSV / JSON</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">صادرات و ورود داده‌ها آسان.</p>
+                </div>
+
+                <!-- Feature 8 -->
+                <div class="feature-card p-6 border border-white/10 rounded-2xl fade-in">
+                    <div class="icon-box w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold mb-2">پشتیبانی از رسانه</h3>
+                    <p class="text-sm text-white/50 leading-relaxed">تصویر، ویدیو و آیکون در جدول.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo -->
+    <section id="demo" class="px-6 lg:px-12 py-32 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-16 fade-in">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+                    امتحان کن.
+                </h2>
+                <p class="text-lg text-white/50 leading-relaxed">
+                    یک نمونه واقعی از جدول Ninja Tables Pro را در پایین تست کنید.
+                </p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-number">C</div>
-                <h3>شرکت‌ها و سازمان‌ها</h3>
-                <p>جدول تعرفه خدمات، جدول اعضای تیم، جدول محصولات و خدمات — همه‌چیز مرتب و حرفه‌ای.</p>
+            <div class="fade-in">
+                <div class="relative mb-6">
+                    <svg class="w-4 h-4 text-white/30 absolute right-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" id="tableSearch" placeholder="جستجو..." 
+                        class="w-full md:w-96 pr-11 pl-5 py-3.5 bg-white/[0.03] border border-white/10 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.05] transition-all duration-300">
+                </div>
+
+                <div class="border border-white/10 rounded-xl overflow-hidden bg-white/[0.01]">
+                    <table class="w-full text-right text-sm">
+                        <thead class="bg-white/[0.02] text-white/40 border-b border-white/10">
+                            <tr>
+                                <th class="p-5 font-medium">نام محصول</th>
+                                <th class="p-5 font-medium">دسته</th>
+                                <th class="p-5 font-medium">امتیاز</th>
+                                <th class="p-5 font-medium">قیمت</th>
+                            </tr>
+                        </thead>
+                        <tbody id="demoTableBody" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="px-6 lg:px-12 py-32 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-16 fade-in">
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+                    سوالات.
+                </h2>
+                <p class="text-lg text-white/50 leading-relaxed">
+                    پاسخ سوالاتی که ممکن است پیش از خرید داشته باشید.
+                </p>
             </div>
 
-            <div class="feature-card">
-                <div class="feature-number">D</div>
-                <h3>آژانس‌ها و فریلنسرها</h3>
-                <p>برای مشتریان خود جداول حرفه‌ای بسازید و پروژه‌های خود را سریع‌تر تحویل دهید.</p>
+            <div class="max-w-3xl space-y-0 fade-in">
+                <details class="group border-b border-white/10 py-6 hover:border-blue-500/30 transition-colors">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span class="text-base font-medium text-white/90 group-hover:text-blue-400 transition-colors">آیا به‌روزرسانی دریافت می‌کند؟</span>
+                        <span class="plus text-white/40 group-open:rotate-45 text-xl font-light group-hover:text-blue-400 transition-colors">+</span>
+                    </summary>
+                    <p class="text-white/50 text-sm mt-4 leading-relaxed">
+                        بله، تمامی به‌روزرسانی‌های بعدی از طریق ژاکت در اختیار شما قرار می‌گیرد.
+                    </p>
+                </details>
+
+                <details class="group border-b border-white/10 py-6 hover:border-blue-500/30 transition-colors">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span class="text-base font-medium text-white/90 group-hover:text-blue-400 transition-colors">چطور به Google Sheets وصل کنم؟</span>
+                        <span class="plus text-white/40 group-open:rotate-45 text-xl font-light group-hover:text-blue-400 transition-colors">+</span>
+                    </summary>
+                    <p class="text-white/50 text-sm mt-4 leading-relaxed">
+                        از بخش Google Sheets Integrations، لینک شیت خود را وارد کنید. همگام‌سازی خودکار انجام می‌شود.
+                    </p>
+                </details>
+
+                <details class="group border-b border-white/10 py-6 hover:border-blue-500/30 transition-colors">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span class="text-base font-medium text-white/90 group-hover:text-blue-400 transition-colors">با المنتور سازگار است؟</span>
+                        <span class="plus text-white/40 group-open:rotate-45 text-xl font-light group-hover:text-blue-400 transition-colors">+</span>
+                    </summary>
+                    <p class="text-white/50 text-sm mt-4 leading-relaxed">
+                        بله، ویجت اختصاصی المنتور و شورت‌کد برای هر صفحه‌سازی دارد.
+                    </p>
+                </details>
+
+                <details class="group border-b border-white/10 py-6 hover:border-blue-500/30 transition-colors">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span class="text-base font-medium text-white/90 group-hover:text-blue-400 transition-colors">نیاز به کدنویسی دارد؟</span>
+                        <span class="plus text-white/40 group-open:rotate-45 text-xl font-light group-hover:text-blue-400 transition-colors">+</span>
+                    </summary>
+                    <p class="text-white/50 text-sm mt-4 leading-relaxed">
+                        خیر، تمام تنظیمات از طریق محیط گرافیکی انجام می‌شود.
+                    </p>
+                </details>
+
+                <details class="group border-b border-white/10 py-6 hover:border-blue-500/30 transition-colors">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span class="text-base font-medium text-white/90 group-hover:text-blue-400 transition-colors">شرایط پشتیبانی چیست؟</span>
+                        <span class="plus text-white/40 group-open:rotate-45 text-xl font-light group-hover:text-blue-400 transition-colors">+</span>
+                    </summary>
+                    <p class="text-white/50 text-sm mt-4 leading-relaxed">
+                        ۶ ماه پشتیبانی رایگان از طریق تیکت ژاکت.
+                    </p>
+                </details>
             </div>
         </div>
     </section>
 
     <!-- CTA -->
-    <section class="cta" id="cta">
-        <h2>همین حالا شروع کنید</h2>
-        <p>
-            برای دریافت این افزونه حرفه‌ای و بی‌نظیر، به <span class="highlight">ژاکت</span> مراجعه کنید — معتبرترین مرجع خرید افزونه‌های وردپرس در ایران.
-        </p>
-        <p>
-            با Ninja Tables Pro، جداول خود را به سطح جدیدی از حرفه‌ای بودن برسانید.
-        </p>
+    <section class="relative px-6 lg:px-12 py-40 border-t border-white/5 overflow-hidden">
+        <div class="hero-glow"></div>
+        
+        <div class="max-w-7xl mx-auto text-center relative fade-in">
+            <h2 class="text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-8">
+                آماده‌ای شروع کنی؟
+            </h2>
+            <p class="text-lg text-white/50 mb-12">
+                همین امروز جداول سایت خود را متحول کن.
+            </p>
+            <a href="#" id="buy-cta" class="btn-glow inline-block px-8 py-4 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-300 font-medium shadow-lg shadow-white/5">
+                خرید از ژاکت
+            </a>
+        </div>
     </section>
 
-    <!-- فوتر -->
-    <footer class="footer">
-        Ninja Tables Pro — پرفروش‌ترین افزونه جدول‌ساز وردپرس<br>
-        تهیه از ژاکت | معتبرترین مرجع خرید افزونه‌های وردپرس
+    <!-- Footer -->
+    <footer class="px-6 lg:px-12 py-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 3h14v2H3V3zm0 4h14v2H3V7zm0 4h14v2H3v-2zm0 4h14v2H3v-2z"/>
+                    </svg>
+                </div>
+                <span class="text-sm text-white/40">Ninja Tables Pro — ارائه شده در ژاکت</span>
+            </div>
+            <p class="text-xs text-white/30">
+                © ۲۰۲۶ تمامی حقوق محفوظ است
+            </p>
+        </div>
     </footer>
 
     <script>
-        // افکت اسکرول
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        const ZHAKET_LINK = "#";
+        document.querySelectorAll('#buy-header, #buy-hero, #buy-cta').forEach(el => {
+            el.href = ZHAKET_LINK;
+        });
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -500,23 +530,49 @@
                     entry.target.classList.add('visible');
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        // مشاهده همه سکشن‌ها و جداکننده‌ها
-        document.querySelectorAll('.section, .divider, .cta').forEach(el => {
-            observer.observe(el);
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        const tableData = [
+            { name: "Ninja Tables Pro", category: "پلاگین", rating: "۴.۹", price: "۲۸۰,۰۰۰" },
+            { name: "Astra Pro", category: "قالب", rating: "۴.۸", price: "۳۵۰,۰۰۰" },
+            { name: "WP Rocket", category: "پلاگین", rating: "۵.۰", price: "۱۹۰,۰۰۰" },
+            { name: "ایران‌سنس", category: "ابزار", rating: "۴.۷", price: "۱۲۰,۰۰۰" },
+            { name: "WoodMart", category: "قالب", rating: "۴.۹", price: "۴۲۰,۰۰۰" }
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('demoTableBody');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                tbody.innerHTML += `
+                    <tr class="table-row">
+                        <td class="p-5 text-white/90 font-medium">${item.name}</td>
+                        <td class="p-5 text-white/50">
+                            <span class="px-2.5 py-1 rounded-full text-xs ${
+                                item.category === 'پلاگین' ? 'bg-blue-500/10 text-blue-400' :
+                                item.category === 'قالب' ? 'bg-purple-500/10 text-purple-400' :
+                                'bg-emerald-500/10 text-emerald-400'
+                            }">${item.category}</span>
+                        </td>
+                        <td class="p-5 text-amber-400">★ ${item.rating}</td>
+                        <td class="p-5 text-white/90 font-medium">${item.price}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('tableSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = tableData.filter(item => 
+                item.name.toLowerCase().includes(term) || 
+                item.category.toLowerCase().includes(term)
+            );
+            renderTable(filtered);
         });
 
-        // افکت ظهور نرم برای هدر
-        document.querySelector('.hero').style.opacity = '0';
-        document.querySelector('.hero').style.transform = 'translateY(50px)';
-
-        setTimeout(() => {
-            const hero = document.querySelector('.hero');
-            hero.style.transition = 'all 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
-            hero.style.opacity = '1';
-            hero.style.transform = 'translateY(0)';
-        }, 100);
+        renderTable(tableData);
     </script>
 
 </body>
